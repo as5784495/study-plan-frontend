@@ -32,13 +32,6 @@ class Main {
         console.log(this.schedule.data);
 
         this.daySchedule = new Object as DaySchedule;
-        Object.values(this.schedule.data).forEach((v: Schedule)=>{
-            // if(v.day === 1)
-            // {
-            //     console.log(v);
-            //     this.daySchedule.Mon.push(v)
-            // }
-        })
         console.log(this.daySchedule)
 
 
