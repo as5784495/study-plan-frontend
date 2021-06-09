@@ -1,0 +1,15 @@
+#tb_schedule{
+    display: flex;
+    border: 1px solid;
+    justify-content: left;
+    align-items: left;
+}
+
+td{
+    padding: 15px 60px;
+    border: 1px solid;
+    width: 120px;
+}
+
+
+
