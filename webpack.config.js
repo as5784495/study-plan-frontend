@@ -1,8 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  entry: "./src/main.ts",
-
+  entry: {
+    main: "./src/Main.ts",
+    Monitor: "./src/Monitor.ts",
+    Plan: "./src/Plan.ts",
+    Rest: "./src/Rest.ts",
+    Schedule: "./src/Schedule.ts",
+  },
   devtool: 'inline-source-map',
   watch:true,
   watchOptions:{
@@ -21,7 +26,7 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
-    filename: 'index.js',
+    filename: '[name]/index.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };
