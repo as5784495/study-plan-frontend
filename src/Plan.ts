@@ -1,7 +1,8 @@
-import {Common} from "./Common";
-class Plan extends Common{
+import {GetElement, GetElementClass} from "./common";
+class Plan extends GetElementClass{
     constructor(){
         super();
+        
         console.log("plan");
     }
 }

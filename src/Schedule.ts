@@ -1,5 +1,5 @@
 import Axios from "axios";
-import {Common} from "./Common";
+import {GetElement, GetElementClass} from "./common";
 type ScheduleType = {
     className: string,
     day: number,
@@ -16,15 +16,18 @@ type DaySchedule = [
     Thu: Schedule[],
     Fri: Schedule[],
 ]
-class Schedule extends Common {
+class Schedule extends GetElementClass{
     private schedule;
-    private tb_schedule = document.getElementById("tb_schedule") as HTMLTableElement;
+    @GetElement()
+    private tb_schedule: HTMLTableElement;
     private daySchedule: DaySchedule;
     
 
     constructor() {
         super();
+        
         console.log("schedule");
+        console.log(this.tb_schedule);
         this.creatSchedule();
         this.pageSelect();
     }

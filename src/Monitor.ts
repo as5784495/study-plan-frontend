@@ -1,5 +1,5 @@
-import {Common} from "./Common";
-class Monitor extends Common{
+import {GetElement, GetElementClass} from "./common";
+class Monitor extends GetElementClass{
     constructor(){
         super();
         console.log("monitor");
