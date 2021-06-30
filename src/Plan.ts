@@ -1,9 +1,12 @@
 import {GetElement, GetElementClass} from "./common";
 class Plan extends GetElementClass{
+    @GetElement()
+    protected div_cube: HTMLInputElement;
+
     constructor(){
         super();
         
-        console.log("plan");
+        // this.div_cube.addEventListener("dragstart", )
     }
 }
 const plan = new Plan();

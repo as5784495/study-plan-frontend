@@ -1,20 +1,54 @@
-iframe.content {
-    width: 85%;
+body {
+    margin: 0;
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+
+#iframe_content {
+    width: 100%;
     height: 100vh;
+}
+#iframe_content.menu-visible {
+    position: relative;
+    left: 180px;
+    width: calc(100% - 180px);
 }
 
 #div_mainMenu{
-    width: 15%;
+    position: fixed;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 180px;
     height: 100vh;
-    float: left;
+}
+#div_mainMenu.menu-visible {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #btn_menu{
     display: block;
     height: 40px;
     width: 80px;
+
+    border: 0;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: #eeeeee;
+
+    transition: background 0.5s, box-shadow 1s;
+    /* animation: loading 2s infinite linear; */
+}
+#btn_menu:hover {
+    background: #dddddd;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.3);
 }
 
-body::-webkit-scrollbar {
-    display: none;
-}
+/* @keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} */
