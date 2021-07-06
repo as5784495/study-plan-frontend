@@ -1,0 +1,33 @@
+#div_source-container {
+    position: relative;
+}
+
+#div_target-container {
+    position: relative;
+}
+
+#div_cube {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    background: red;
+    width: 100px;
+    height: 100px;
+
+}
+
+#div_target-container {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 100px;
+    left: 100px;
+}
+
+[draggable="true"] {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }

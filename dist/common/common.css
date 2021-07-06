@@ -10,9 +10,9 @@ a{
 .div_content{
     display: flex;
 }
-.mdi-dots-menu{
+.mdi-menu{
     width: 8px;
     height: 5px;
-    color: #07FF;
+    color: #696969;
     padding: 2px;
 }

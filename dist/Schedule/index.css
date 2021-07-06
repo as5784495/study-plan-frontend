@@ -12,4 +12,28 @@ td{
 }
 
 
+#div_loading {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height: 600px;
+}
+
+#loadingFigure{
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    color: #0000ff;
+    animation: loading 2s infinite linear;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 

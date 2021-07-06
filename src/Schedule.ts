@@ -20,14 +20,15 @@ class Schedule extends GetElementClass{
     private schedule;
     @GetElement()
     private tb_schedule: HTMLTableElement;
-    private daySchedule: DaySchedule;
+
+    @GetElement()
+    private div_loading: HTMLDivElement;
     
 
     constructor() {
         super();
         
         console.log("schedule");
-        console.log(this.tb_schedule);
         this.creatSchedule();
         this.pageSelect();
     }
@@ -37,26 +38,12 @@ class Schedule extends GetElementClass{
     }
     
     async creatSchedule(){
+        this.div_loading.style.display = "flex";
+        this.tb_schedule.style.display = "none"
         this.schedule = await Axios.get("https://script.google.com/macros/s/AKfycbwFg7-fPUmEqJCh9tOkgllQGqfFCOMgfMwaCyt5Opm2bqBXSBfRSfliNUdDkoRqqLuI_A/exec?func=schedule")
-        console.log(this.schedule);
-        console.log(this.schedule.data);
+        this.tb_schedule.style.display = "block";
+        this.div_loading.style.display = "none";
 
-        this.daySchedule = new Object as DaySchedule;
-        console.log(this.daySchedule)
-
-
-        // let cells = this.tb_schedule.rows.item(0).cells.length;
-        // let row1 = this.tb_schedule.rows.item(1);
-        // let row2 = this.tb_schedule.rows.item(2);
-        // let row3 = this.tb_schedule.rows.item(3);
-        // let row4 = this.tb_schedule.rows.item(4);
-        // let row5 = this.tb_schedule.rows.item(5);
-        // let row6 = this.tb_schedule.rows.item(6);
-        // let row7 = this.tb_schedule.rows.item(7);
-        // let row8 = this.tb_schedule.rows.item(8);
-        // let row9 = this.tb_schedule.rows.item(9);
-        // let row10 = this.tb_schedule.rows.item(10);
-        // let rowset = [row1, row2, row3, row4, row5, row6, row7, row8, row9 , row10];
         let rowset = new Array(10+1).fill(null).map((v, i) => this.tb_schedule.rows.item(i));
         let cells = rowset[0].cells.length;
         rowset.shift();
@@ -69,7 +56,6 @@ class Schedule extends GetElementClass{
             for(let j = 1;j<cells;j++){
                 let column = rowset[i].insertCell();
                 column.id = `co_${i}${j}` ;
-                // document.getElementById(`co_${i}${j}`).innerHTML = `co_${i}${j}`;
             }   
         }
 
