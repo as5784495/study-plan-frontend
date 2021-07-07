@@ -27,6 +27,10 @@ class Main extends GetElementClass{
                 }, 100)
             });
         })
+
+        window.addEventListener("message", (e: MessageEvent) => {
+            console.log(e.data);
+        });
         
         this.btn_menu.addEventListener("click", () => {
             const visible = (this.div_hrefDiv.style.display === "block");
@@ -40,6 +44,13 @@ class Main extends GetElementClass{
                 this.div_mainMenu.classList.add("menu-visible");
                 this.iframe_content.classList.add("menu-visible");
             }
+        });
+        this.div_hrefDiv.addEventListener("click", (event: MouseEvent) => {
+            const a = event.target as HTMLAnchorElement;
+            console.log(a.href);
+            // const matched = a.href.match(/dist\/(.*)\//)[1];
+            const matched = a.href.match(/dist.*/)[0];
+            console.log(matched);
         });
     }
 }

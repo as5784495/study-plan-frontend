@@ -38,11 +38,15 @@ class Schedule extends GetElementClass{
     }
     
     async creatSchedule(){
+        window.parent.postMessage("loading", "*");
+
         this.div_loading.style.display = "flex";
         this.tb_schedule.style.display = "none"
         this.schedule = await Axios.get("https://script.google.com/macros/s/AKfycbwFg7-fPUmEqJCh9tOkgllQGqfFCOMgfMwaCyt5Opm2bqBXSBfRSfliNUdDkoRqqLuI_A/exec?func=schedule")
         this.tb_schedule.style.display = "block";
         this.div_loading.style.display = "none";
+
+        window.parent.postMessage("loaded", "*");
 
         let rowset = new Array(10+1).fill(null).map((v, i) => this.tb_schedule.rows.item(i));
         let cells = rowset[0].cells.length;
