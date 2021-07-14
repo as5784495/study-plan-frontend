@@ -2,18 +2,25 @@ import {GetElement, GetElementClass} from "./common";
 class Plan extends GetElementClass{
     @GetElement()
     protected div_cube: HTMLInputElement;
-    @GetElement("div_target-container")
-    protected dropTarget: HTMLDivElement;
-    
+    @GetElement()
+    protected div_targetContainer: HTMLDivElement;
+    @GetElement()
+    protected div_sourceContainer: HTMLDivElement;
 
     constructor () {
         super();
         console.log("plan");
-        
+
+        window.parent.postMessage("loaded", "*");
+
         this.div_cube.addEventListener("dragstart",this.dragStart);
-        this.dropTarget.addEventListener('drop', this.dropped);
-        this.dropTarget.addEventListener('dragenter', this.cancelDefault);
-        this.dropTarget.addEventListener('dragover', this.cancelDefault);
+        this.div_targetContainer.addEventListener('drop', this.dropped);
+        this.div_targetContainer.addEventListener('dragenter', this.cancelDefault);
+        this.div_targetContainer.addEventListener('dragover', this.cancelDefault);
+        
+        this.div_sourceContainer.addEventListener('drop', this.dropped);
+        this.div_sourceContainer.addEventListener('dragenter', this.cancelDefault);
+        this.div_sourceContainer.addEventListener('dragover', this.cancelDefault);
     }
 
     dragStart (e: DragEvent) {
@@ -23,6 +30,7 @@ class Plan extends GetElementClass{
     dropped = (e: DragEvent) => {
         this.cancelDefault(e);
         let id = e.dataTransfer.getData('text/plain');
+        console.log(id);
         (e.target as HTMLElement).appendChild(document.querySelector('#' + id));
       }
       

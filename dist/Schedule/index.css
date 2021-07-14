@@ -1,4 +1,4 @@
-#tb_schedule{
+#tb_schedule {
     display: flex;
     border: 1px solid;
     justify-content: left;
@@ -11,29 +11,34 @@ td{
     width: 120px;
 }
 
+.tb_element {
+    position: relative;
 
-#div_loading {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height: 600px;
+
+    background: rgba(0, 0, 0, 0.2);
+    /* height: 40px;
+    width: 40px; */
+    display: flex;
+    min-width: 25px;
+    min-height: 25px;
 }
 
-#loadingFigure{
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
-    color: #0000ff;
-    animation: loading 2s infinite linear;
+.div_contain {
+    position: relative;
+
+    background: rgba(76, 49, 139, 0.2);
+    display: flex;
+    min-width: 75px;
+    min-height: 75px;
 }
 
-@keyframes loading {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
+[draggable="true"] {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+
+
 
 

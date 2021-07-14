@@ -44,11 +44,28 @@ body::-webkit-scrollbar {
     box-shadow: 3px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* @keyframes loading {
+#div_loading {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+}
+
+#loadingFigure{
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    color: #0000ff;
+    animation: loading 2s infinite linear;
+}
+
+@keyframes loading {
     0% {
         transform: rotate(0deg);
     }
     100% {
         transform: rotate(360deg);
     }
-} */
+}

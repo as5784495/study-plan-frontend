@@ -21,41 +21,65 @@ class Schedule extends GetElementClass{
     @GetElement()
     private tb_schedule: HTMLTableElement;
 
-    @GetElement()
-    private div_loading: HTMLDivElement;
+    
+    private tb_element = document.getElementsByClassName("tb_element");
+
+    private div_contain = document.getElementsByClassName("div_contain");
     
 
     constructor() {
         super();
         
         console.log("schedule");
-        this.creatSchedule();
-        this.pageSelect();
+        this.init();
     }
 
-    pageSelect () {
+    async init(){
+        await this.creatSchedule();
+        const tb_element = Array.from(this.tb_element);
+        const div_object = Array.from(this.div_contain);
+        
+        div_object.forEach((v) => {
+            v.addEventListener("dragstart",this.dragStart);
+        })
+
+        tb_element.forEach((v) => {
+            v.addEventListener('drop', this.dropped);
+            v.addEventListener('dragenter', this.cancelDefault);
+            v.addEventListener('dragover', this.cancelDefault);
+        })
+
+
         
     }
+
     
     async creatSchedule(){
-        this.div_loading.style.display = "flex";
-        this.tb_schedule.style.display = "none"
+        window.parent.postMessage("loading", "*");
         this.schedule = await Axios.get("https://script.google.com/macros/s/AKfycbwFg7-fPUmEqJCh9tOkgllQGqfFCOMgfMwaCyt5Opm2bqBXSBfRSfliNUdDkoRqqLuI_A/exec?func=schedule")
-        this.tb_schedule.style.display = "block";
-        this.div_loading.style.display = "none";
+        window.parent.postMessage("loaded", "*");
 
         let rowset = new Array(10+1).fill(null).map((v, i) => this.tb_schedule.rows.item(i));
         let cells = rowset[0].cells.length;
         rowset.shift();
         
-        let classTime = ["08：10", "09：05", "10：15", "11：10", "12：05", "13：10", "14：05", "15：15", "16：10", "17：10"];
-        let classday = [1, 2, 3, 4, 5];
+        const classTime = ["08：10", "09：05", "10：15", "11：10", "12：05", "13：10", "14：05", "15：15", "16：10", "17：10"];
+        const classday = [1, 2, 3, 4, 5];
 
         
         for(let i = 0;i<10;i++){
             for(let j = 1;j<cells;j++){
                 let column = rowset[i].insertCell();
-                column.id = `co_${i}${j}` ;
+                column.id = `co_${i}${j}`;
+
+                const div = document.createElement("div");
+                div.classList.add("tb_element");
+                column.appendChild(div);
+
+                const div_contain = document.createElement("div");
+                div_contain.classList.add("div_contain")
+                div.append(div_contain);
+                
             }   
         }
 
@@ -67,7 +91,10 @@ class Schedule extends GetElementClass{
                         if(l===v.day){
                             for(let n=0;n<v.lessionNum;n++)
                             {
-                            document.getElementById(`co_${i+n}${j+1}`).innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
+                                const div = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0];
+                                const  div_contain = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0].getElementsByTagName("div")[0];
+                                div_contain.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
+                                // div.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
                             }
                         }
                     })
@@ -76,6 +103,23 @@ class Schedule extends GetElementClass{
         })
 
     }
+
+    dragStart (e: DragEvent) {
+        e.dataTransfer.setData("text/plain1" , (e.target as HTMLElement).className);
+    }
+
+    dropped = (e: DragEvent) => {
+        this.cancelDefault(e);
+        let className = e.dataTransfer.getData('text/plain1');
+        console.log(className);
+        // (e.target as HTMLElement).appendChild(document.querySelector('.' + className));
+      }
+      
+    cancelDefault = (e: DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
 
 }
 const schedule = new Schedule();

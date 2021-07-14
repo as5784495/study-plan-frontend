@@ -12,21 +12,28 @@ class Main extends GetElementClass{
 
     @GetElement()
     protected iframe_content: HTMLIFrameElement;
-
-    protected href_groups = document.getElementsByClassName("href_groups") as HTMLCollection;
+    @GetElement()
+    private div_loading: HTMLDivElement;
     
     constructor(){
         super();
-        let arrHref = Array.from(this.href_groups);
-        this.iframe_content.src = localStorage.getItem("src");
-        arrHref.forEach((v) => {
-            v.addEventListener("click", () => {
-                setTimeout(() => {
-                    console.log(this.iframe_content.contentWindow.location.href);
-                    localStorage.setItem("src", this.iframe_content.contentWindow.location.href);
-                }, 100)
-            });
-        })
+        
+        this.iframe_content.src = `http://127.0.0.1:5500/${localStorage.getItem("src")}`;
+
+        window.addEventListener("message", (e: MessageEvent) => {
+            console.log(e.data);
+            if(e.data === "loading")
+            {
+                this.div_loading.style.display = "flex";
+                this.iframe_content.style.opacity = "0";
+
+            }
+            else if (e.data === "loaded")
+            {
+                this.div_loading.style.display = "none";
+                this.iframe_content.style.opacity = "1";
+            }
+        });
         
         this.btn_menu.addEventListener("click", () => {
             const visible = (this.div_hrefDiv.style.display === "block");
@@ -40,6 +47,13 @@ class Main extends GetElementClass{
                 this.div_mainMenu.classList.add("menu-visible");
                 this.iframe_content.classList.add("menu-visible");
             }
+        });
+
+        this.div_hrefDiv.addEventListener("click", (event: MouseEvent) => {
+            const a = event.target as HTMLAnchorElement;
+            const matched = a.href.match(/dist.*/)[0];
+            localStorage.setItem("src", matched);
+            
         });
     }
 }
