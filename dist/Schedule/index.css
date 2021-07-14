@@ -30,6 +30,7 @@ td{
     display: flex;
     min-width: 75px;
     min-height: 75px;
+    pointer-events: none;
 }
 
 [draggable="true"] {

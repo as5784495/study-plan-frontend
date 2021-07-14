@@ -18,7 +18,7 @@ class Main extends GetElementClass{
     constructor(){
         super();
         
-        this.iframe_content.src = `http://127.0.0.1:5500/${localStorage.getItem("src")}`;
+        localStorage.getItem("src") ? `http://127.0.0.1:5500/${localStorage.getItem("src")}` : `http://127.0.0.1:5500/dist/Schedule/`;
 
         window.addEventListener("message", (e: MessageEvent) => {
             console.log(e.data);
