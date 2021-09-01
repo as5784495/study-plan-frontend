@@ -11,13 +11,47 @@ td{
     width: 120px;
 }
 
+#div_trashCan {
+    height: 5vh;
+    width: 5vw;
+    background-color: lightblue;
+}
+
+#div_settingBlock {
+    display: block;
+    position: fixed;
+    width: 40%;
+    height: 70%;
+    bottom: 20%;
+    left: 88%;
+}
+
+#div_dragSource {
+    display: block;
+    position: fixed;
+    min-width: 25px;
+    min-height: 25px;
+    left: 88%;
+    background: rgba(0, 0, 0, 0.2);
+
+}
+
+#div_dragger {
+    background: rgba(76, 49, 139, 0.2);
+    display: flex;
+    /* min-width: 75px; */
+    min-height: 75px;
+    user-select: none; 
+}
+
+
+
+
 .tb_element {
     position: relative;
 
 
     background: rgba(0, 0, 0, 0.2);
-    /* height: 40px;
-    width: 40px; */
     display: flex;
     min-width: 25px;
     min-height: 25px;
@@ -28,9 +62,9 @@ td{
 
     background: rgba(76, 49, 139, 0.2);
     display: flex;
-    min-width: 75px;
-    min-height: 75px;
-    pointer-events: none;
+    /* min-width: 75px; */
+    min-height: 75px; 
+    user-select: none; 
 }
 
 [draggable="true"] {

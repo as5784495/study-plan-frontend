@@ -11,9 +11,14 @@ class Main extends GetElementClass{
     protected div_hrefDiv: HTMLDivElement;
 
     @GetElement()
+    protected div_settingBlock: HTMLDivElement;
+
+
+    @GetElement()
     protected iframe_content: HTMLIFrameElement;
     @GetElement()
     private div_loading: HTMLDivElement;
+
     
     constructor(){
         super();
@@ -39,6 +44,7 @@ class Main extends GetElementClass{
             const visible = (this.div_hrefDiv.style.display === "block");
 
             this.div_hrefDiv.style.display = visible ? "none" : "block";
+            
             if (visible) {
                 this.div_mainMenu.classList.remove("menu-visible");
                 this.iframe_content.classList.remove("menu-visible");

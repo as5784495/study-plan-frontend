@@ -20,6 +20,8 @@
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "axios": "^0.21.1",
-    "lodash": "^4.17.20"
+    "google-spreadsheet": "^3.1.15",
+    "googleapis": "^39.2.0",
+    "lodash": "^4.17.21"
   }
 }

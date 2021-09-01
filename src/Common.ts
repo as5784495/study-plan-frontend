@@ -2,14 +2,12 @@ let elements = [] as { target: Object, prop: string, name: string }[];
 export function GetElement(name?: string): PropertyDecorator {
     return function (target, prop: string) {
         elements.push({ target, prop, name: name || prop });
-        console.log(elements);
     }
 } 
 
 export class GetElementClass {
     constructor() {
         let found = elements.filter(v => {
-            console.log(v.target);
             let proto = this;
             while(proto !== v.target)
             {
