@@ -4,19 +4,35 @@ import {GetElement, GetElementClass} from "./common";
 type ScheduleType = {
     className: string,
     day: number,
-    lessionNum: number,
     point: number,
     professor: string,
     scheduleId: number,
-    startTime: string,
-    time?: {timeId: number,
-        startTime: string,
-        duration: number},
-
+    timeIds: number[],
 }
 
+type TimeType = {
+    timeId: number,
+    startTime: string,
+    duration: number,
+}
+
+type Data = {
+    schedule: ScheduleType[],
+    time: TimeType[],
+}
+
+
+
+
 class Schedule extends GetElementClass{
-    private schedule;
+    private header: { mode: string,
+    credentials: string, // include, *same-origin, omit
+    redirect: string,
+    headers: {Authorization: string},
+    };
+    private token = "1N6-x-9dtKXbXL_ewacav-w7plJirLDeSmZXkvxCE24WgTgru5A8ZZOqs";
+    private schedule: ScheduleType[];
+    private time: TimeType[];
     @GetElement()
     private tb_schedule: HTMLTableElement;
     @GetElement()
@@ -54,6 +70,11 @@ class Schedule extends GetElementClass{
     constructor() {
         super();
         console.log("schedule");
+        this.header = {
+            mode: 'no-cors',
+            credentials: 'include', // include, *same-origin, omit
+            redirect: 'follow',
+            headers: {Authorization: `Bearer ${ this.token }`}};
         this.init();
 
     }
@@ -124,7 +145,9 @@ class Schedule extends GetElementClass{
             {
                 let content = (document.getElementById('tb_schedule') as HTMLTableElement).rows[j+1].cells[i+1].children[0].children[0].innerHTML;
                 let contentSplit = content.split("/");
+                // console.log(content);
 
+                
 
                 if(contentSplit[3] !== undefined)
                 {
@@ -132,19 +155,26 @@ class Schedule extends GetElementClass{
                     Obj = {
                         className: contentSplit[0],
                         day: i+1,
-                        lessionNum: 1,
                         point: parseInt(contentSplit[2]) ,
                         professor: contentSplit[1],
                         scheduleId: parseInt(`${contentSplit[3]}`),
-                        startTime: `${classTime[j]}`,
+                        timeIds: [j],
                     }
+
                     data.push(Obj);
                 }
+                else{
+                    data.push(undefined);
+                }
+                
             }
         } 
         data = data.filter((v,i) => {
-            const index =  data.findIndex(e => e.scheduleId === v.scheduleId);
-            if(index !== i) data[index].lessionNum ++;
+            if(v === undefined) return false;
+            const index =  data.findIndex(e => e?.scheduleId === v?.scheduleId);
+            if(index !== i){
+                data[index].timeIds.push(i%10);
+            }
             return index === i;
         })
 
@@ -153,10 +183,12 @@ class Schedule extends GetElementClass{
         
         
         // console.log(JSON.stringify(arr));
-        
+
+        console.log(JSON.stringify(data));
+        console.log(this.header);
         
          
-        await Axios.post("https://script.google.com/macros/s/AKfycbxDqLQZRwY99qHIMYyjuGOgTzfqnIVv3DT8dryag2fEj3KsAfxEdw_Gju_yI5R3glPz7Q/exec" ,JSON.stringify(data));
+        await Axios.post("https://script.google.com/macros/s/AKfycbywO9Z4wDCDV5JrtGEhhc1y0_FEY4FGfPQXEpQPis4MEpkr_2eGWDc_U5G5ldeIWIAVNw/exec",{} ,this.header);
 
         
 
@@ -166,9 +198,13 @@ class Schedule extends GetElementClass{
 
     async creatSchedule(){
         window.parent.postMessage("loading", "*");
-        this.schedule = await Axios.get("https://script.google.com/macros/s/AKfycbx-sbf1Xegtt73IZbOkvPPTf_xe606C1xyV-5hrLhT6kyjDEVziQv5OTjNGp9kqSm7npg/exec?func=schedule")
+        const data  = await Axios.get("https://script.google.com/macros/s/AKfycbywO9Z4wDCDV5JrtGEhhc1y0_FEY4FGfPQXEpQPis4MEpkr_2eGWDc_U5G5ldeIWIAVNw/exec?func=schedule")
+        this.schedule = data.data.schedule;
+        this.time = data.data.time;
         window.parent.postMessage("loaded", "*");
-        console.log(this.schedule);
+        // console.log(this.schedule);
+
+        
 
         let rowset = new Array(10+1).fill(null).map((v, i) => this.tb_schedule.rows.item(i));
         let cells = rowset[0].cells.length;
@@ -194,25 +230,44 @@ class Schedule extends GetElementClass{
                 
             }   
         }
+        // console.log(this.schedule, this.time);
 
-        Object.values(this.schedule.data).forEach((v:ScheduleType) =>{
-            classTime.forEach((k , i)=>{
-                if(k===v.startTime)
+        Object.values(this.schedule).forEach((v) =>{
+            this.time.forEach((k , i)=>{
+                if(k.timeId === v.timeIds[0])
                 {
                     classday.forEach((l,j)=>{
                         if(l===v.day){
-                            for(let n=0;n<v.lessionNum;n++)
+                            for(let n=0;n<v.timeIds.length;n++)
                             {
                                 const div = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0];
                                 const  div_contain = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0].getElementsByTagName("div")[0];
                                 div_contain.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
-                                // div.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
                             }
                         }
                     })
                 }
             })
         })
+        
+        // Object.values(this.schedule).forEach((v) =>{
+        //     classTime.forEach((k , i)=>{
+        //         if(k===v.startTime)
+        //         {
+        //             classday.forEach((l,j)=>{
+        //                 if(l===v.day){
+        //                     for(let n=0;n<v.lessionNum;n++)
+        //                     {
+        //                         const div = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0];
+        //                         const  div_contain = document.getElementById(`co_${i+n}${j+1}`).getElementsByTagName("div")[0].getElementsByTagName("div")[0];
+        //                         div_contain.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
+        //                         // div.innerHTML = `${v.className}/${v.professor}/${v.point}學分/${v.scheduleId}`;
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //     })
+        // })
 
     }
 
